@@ -6,13 +6,12 @@ phases:
       # pull policystream image
       - aws ecr get-login-password | docker login --username AWS --password-stdin $POLICYSTREAM_IMAGE_URL
       - docker pull $POLICYSTREAM_IMAGE_URL
-      - docker run -v $(pwd):/home/custodian $POLICYSTREAM_IMAGE_URL diff -r /home/custodian --source $POLICYSTREAM_BASE -o /home/custodian/policystream.yaml
+      - pip install c7n-policystream
+      - policystream diff -r $POLICY_DIR --target $CODEBUILD_RESOLVED_SOURCE_VERSION --source $POLICYSTREAM_BASE -o policystream.yaml
       - cat policystream.yaml
       # pull the c7n image and run it
-      - export C7N_IMAGE="$C7N_IMAGE_URL:$C7N_IMAGE_TAG"
-      - aws ecr get-login-password | docker login --username AWS --password-stdin $C7N_IMAGE
-      - docker pull $C7N_IMAGE
-      - docker run $C7N_IMAGE
+      - pip install c7n@$C7N_IMAGE_TAG
+      - custodian run policystream.yaml -s output -v --dryrun
   build:
     commands: []
   post_build:
