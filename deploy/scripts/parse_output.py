@@ -39,8 +39,6 @@ gh = Github(
     login_or_token=os.environ["GITHUB_TOKEN"]
 )
 repo = gh.get_repo(full_name_or_id=os.environ["GITHUB_REPO"])
-# CODEBUILD_SOURCE_VERSION comes in as pr/123
-pr = repo.get_pull(os.environ["CODEBUILD_SOURCE_VERSION"].split('/')[-1])
 commit = repo.get_commit(sha=os.environ["CODEBUILD_RESOLVED_SOURCE_VERSION"])
 commit.create_comment(
     body="hello world"
