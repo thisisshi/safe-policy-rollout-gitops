@@ -2,3 +2,6 @@
 *.tfstate*
 *.terraform
 *.terraform.lock.hcl
+output/*
+*.auto.tfvars
+*.DS_Store
