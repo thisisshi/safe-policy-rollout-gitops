@@ -47,7 +47,7 @@ variable "output_dir" {
 variable github_api_url {
   type = string
   description = "Github API Url"
-  default = "https://github.com/api/v3"
+  default = "https://api.github.com"
 }
 
 variable github_token {

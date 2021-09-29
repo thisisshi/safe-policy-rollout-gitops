@@ -35,7 +35,7 @@ for k, v in resource_counts.items():
 log.info(json.dumps(resource_counts, indent=2))
 
 gh = Github(
-    # base_url=os.environ["GITHUB_API_URL"],
+    base_url=os.environ["GITHUB_API_URL"],
     login_or_token=os.environ["GITHUB_TOKEN"]
 )
 repo = gh.get_repo(full_name_or_id=os.environ["GITHUB_REPO"])
