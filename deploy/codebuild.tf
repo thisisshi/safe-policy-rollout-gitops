@@ -39,6 +39,12 @@ resource "aws_codebuild_project" "policy_ci" {
       name = "GITHUB_API_URL"
       value = var.github_api_url
     }
+
+    environment_variable {
+      name  = "GITHUB_REPO"
+      value = var.repository_url
+    }
+
   }
 
   logs_config {

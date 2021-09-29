@@ -38,7 +38,7 @@ gh = Github(
     base_url=os.environ["GITHUB_API_URL"],
     login_or_token=os.environ["GITHUB_TOKEN"]
 )
-repo = gh.get_repo()
+repo = gh.get_repo(full_name_or_id=os.environ["GITHUB_REPO"])
 commit = repo.get_commit(sha=os.environ["CODEBUILD_RESOLVED_SOURCE_VERSION"])
 commit.create_status(
     context="c7n/ci",
