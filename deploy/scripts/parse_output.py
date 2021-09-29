@@ -51,8 +51,8 @@ def make_status(commit, resource_counts):
         if k in new_policies["new"]:
             continue
         if (
-            v["delta"] >= os.environ["RESOURCE_THRESHOLD"]
-            or v["delta-percent"] > os.environ["RESOURCE_THRESHOLD_PERCENT"]
+            v["delta"] >= int(os.environ["RESOURCE_THRESHOLD"])
+            or v["delta-percent"] > int(os.environ["RESOURCE_THRESHOLD_PERCENT"])
         ):
             status = "failure"
             failed += 1
@@ -107,5 +107,5 @@ gh = Github(
 )
 repo = gh.get_repo(full_name_or_id=os.environ["GITHUB_REPO"])
 commit = repo.get_commit(sha=os.environ["CODEBUILD_RESOLVED_SOURCE_VERSION"])
-make_comment(commit, resource_counts)
 make_status(commit, resource_counts)
+make_comment(commit, resource_counts)
