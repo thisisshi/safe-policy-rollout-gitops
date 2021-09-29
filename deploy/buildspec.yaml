@@ -3,7 +3,7 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - export C7N_IMAGE = $C7N_IMAGE_URL:$C7N_IMAGE_TAG
+      - export C7N_IMAGE="$C7N_IMAGE_URL:$C7N_IMAGE_TAG"
       - c7n-policystream diff $POLICY_DIR --source $CODEBUILD_SOURCE_VERSION --target $POLICYSTREAM_BASE -o /policy.yaml
       # pull the c7n image and run it
       - aws ecr get-login-password | docker login --username AWS --password-stdin $C7N_IMAGE

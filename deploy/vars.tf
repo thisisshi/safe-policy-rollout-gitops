@@ -20,14 +20,14 @@ variable "c7n_image_tag" {
   default     = "latest"
 }
 
-variable tags {
-  type = map(string)
-  description  = "Tags"
-  default = {}
+variable "tags" {
+  type        = map(string)
+  description = "Tags"
+  default     = {}
 }
 
-variable policy_dir {
-  type = string
+variable "policy_dir" {
+  type        = string
   description = "Policies Directory (relative path from repo root)"
-  default = "policies"
+  default     = "policies"
 }
