@@ -60,3 +60,15 @@ variable github_repo {
   type = string
   description = "Github Repo Name"
 }
+
+variable resource_threshold {
+  type = number
+  description = "Policy resource delta threshold"
+  default = 10
+}
+
+variable resource_threshold_percent {
+  type = number
+  description = "Policy resource delta threshold percent"
+  default = 1
+}

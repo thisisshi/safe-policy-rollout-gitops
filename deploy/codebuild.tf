@@ -45,6 +45,16 @@ resource "aws_codebuild_project" "policy_ci" {
       value = var.github_repo
     }
 
+    environment_variable {
+      name = "RESOURCE_THRESHOLD"
+      value = var.resource_threshold
+    }
+
+    environment_variable {
+      name = "RESOURCE_THRESHOLD_PERCENT"
+      value = var.resource_threshold_percent
+    }
+
   }
 
   logs_config {

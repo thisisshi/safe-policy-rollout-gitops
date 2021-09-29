@@ -54,6 +54,10 @@ for k, v in resource_counts.items():
     if "new" not in v:
         resource_counts[k]["new"] = 0
     resource_counts[k]["delta"] = v["new"] - v["original"]
+    if resource_counts[k]['original'] == 0:
+        resource_counts[k]['delta-percent'] = 1
+    else:
+        resource_counts[k]['delta'] = v['new']/v['original']
 
 log.info(json.dumps(resource_counts, indent=2))
 
@@ -65,4 +69,28 @@ repo = gh.get_repo(full_name_or_id=os.environ["GITHUB_REPO"])
 commit = repo.get_commit(sha=os.environ["CODEBUILD_RESOLVED_SOURCE_VERSION"])
 commit.create_comment(
     body=make_comment(resource_counts)
+)
+
+status = "success"
+description = "Resource Check Threshold"
+
+with open('/tmp/new_policies.json') as f:
+    new_policies = json.load(f)
+
+failed = 0
+
+for k, v in resource_counts.items():
+    if k in new_policies["new"]:
+        continue
+    if v['delta'] >= os.environ['RESOURCE_THRESHOLD'] or v['delta-percent'] > os.environ['RESOURCE_THRESHOLD_PERCENT']:
+        status = "failure"
+        failed += 1
+
+if failed > 0:
+    description = "Found {failed} policies over resource threshold limits"
+
+commit.create_status(
+    state=status,
+    description=description,
+    context="cloud-custodian/resource-threshold"
 )
