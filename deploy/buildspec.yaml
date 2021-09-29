@@ -7,7 +7,6 @@ phases:
       - export SOURCE_SHA=$(git rev-parse $POLICYSTREAM_BASE)
       - export CUR_DIR=$(pwd)
       - git checkout $SOURCE_SHA
-      - git pull
       - git checkout $CODEBUILD_RESOLVED_SOURCE_VERSION
       - aws ecr get-login-password | docker login --username AWS --password-stdin $POLICYSTREAM_IMAGE_URL
       - docker pull $POLICYSTREAM_IMAGE_URL
