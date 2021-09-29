@@ -8,7 +8,7 @@ phases:
     commands:
       # run against changed policies
       - c7n-policystream diff -r $POLICY_DIR --target $CODEBUILD_RESOLVED_SOURCE_VERSION --source $POLICYSTREAM_BASE -o /tmp/policystream.yaml
-      - cat policystream.yaml
+      - cat /tmp/policystream.yaml
       - custodian run /tmp/policystream.yaml -s $OUTPUT_DIR/new -v --dryrun
       # now run against the original policies
       - git checkout $POLICYSTREAM_BASE
