@@ -1,0 +1,19 @@
+policies:
+  - name: all-iam-role
+    resource: aws.iam-role
+    conditions:
+      - region: us-east-1
+  - name: all-lambda
+    resource: aws.lambda
+  - name: all-s3
+    resource: aws.s3
+    conditions:
+      - region: us-east-1
+    filters:
+      - type: value
+        key: Name
+        value: 532725030595-us-east-1-sambox-sceptre-artifacts
+  - name: all-iam-policy
+    resource: aws.iam-policy
+    conditions:
+      - region: us-east-1
