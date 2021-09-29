@@ -4,10 +4,8 @@ phases:
   pre_build:
     commands:
       # pull policystream image
-      - aws ecr get-login-password | docker login --username AWS --password-stdin $POLICYSTREAM_IMAGE_URL
-      - docker pull $POLICYSTREAM_IMAGE_URL
       - pip install c7n-policystream
-      - policystream diff -r $POLICY_DIR --target $CODEBUILD_RESOLVED_SOURCE_VERSION --source $POLICYSTREAM_BASE -o policystream.yaml
+      - c7n-policystream diff -r $POLICY_DIR --target $CODEBUILD_RESOLVED_SOURCE_VERSION --source $POLICYSTREAM_BASE -o policystream.yaml
       - cat policystream.yaml
       # pull the c7n image and run it
       - pip install c7n@$C7N_IMAGE_TAG
