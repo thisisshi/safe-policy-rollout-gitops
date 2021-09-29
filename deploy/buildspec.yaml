@@ -6,6 +6,9 @@ phases:
       # pull policystream image
       - export SOURCE_SHA=$(git rev-parse $POLICYSTREAM_BASE)
       - export CUR_DIR=$(pwd)
+      - git checkout $SOURCE_SHA
+      - git pull
+      - git checkout $CODEBUILD_RESOLVED_SOURCE_VERSION
       - aws ecr get-login-password | docker login --username AWS --password-stdin $POLICYSTREAM_IMAGE_URL
       - docker pull $POLICYSTREAM_IMAGE_URL
       - docker run -v $CUR_DIR:/home/custodian $POLICYSTREAM_IMAGE_URL diff -r /home/custodian/$POLICY_DIR --target $CODEBUILD_RESOLVED_SOURCE_VERSION --source $SOURCE_SHA -o /home/custodian/ci/output/policy.yaml
