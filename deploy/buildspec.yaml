@@ -10,7 +10,7 @@ phases:
       - git checkout $CODEBUILD_RESOLVED_SOURCE_VERSION
       - aws ecr get-login-password | docker login --username AWS --password-stdin $POLICYSTREAM_IMAGE_URL
       - docker pull $POLICYSTREAM_IMAGE_URL
-      - docker run -v $CUR_DIR:/home/custodian $POLICYSTREAM_IMAGE_URL diff -r /home/custodian/$POLICY_DIR --source $CODEBUILD_RESOLVED_SOURCE_VERSION --target $SOURCE_SHA -o /home/custodian/ci/output/policy.yaml
+      - docker run -v $CUR_DIR:/home/custodian -v $CUR_DIR/.git:/home/custodian/.git $POLICYSTREAM_IMAGE_URL diff -r /home/custodian/$POLICY_DIR --source $CODEBUILD_RESOLVED_SOURCE_VERSION --target $SOURCE_SHA -o /home/custodian/ci/output/policy.yaml
       - cat /ci/output/policy.yaml
       # pull the c7n image and run it
       - export C7N_IMAGE="$C7N_IMAGE_URL:$C7N_IMAGE_TAG"
