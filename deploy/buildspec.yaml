@@ -14,10 +14,10 @@ phases:
       - cp scripts/parse_output.py /tmp/parse_output.py
       # now run against the original policies
       - git checkout $POLICYSTREAM_BASE
-      - python3 scripts/resolve_base.py
+      - python3 /tmp/resolve_base.py
       - cat /tmp/policystream-original.json
       - custodian run /tmp/policystream-original.json/original -v --dryrun
   post_build:
     commands:
-      - python3 /tmp/resolve_base.py
+      # Now parse the outputs
       - python3 /tmp/parse_output.py
