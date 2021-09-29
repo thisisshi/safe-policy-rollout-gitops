@@ -21,6 +21,7 @@ base_dir = os.environ["POLICY_DIR"]
 
 original_policies = {"policies": []}
 original_policy_names = []
+
 for root, dirs, files in os.walk(base_dir):
     for name in files:
         with open(os.path.join(root, name)) as f:
@@ -36,6 +37,8 @@ for root, dirs, files in os.walk(base_dir):
                 policies = yaml.safe_load(f)
             except Exception as e:
                 log.error(e)
+                continue
+            if not policies:
                 continue
             if policies.get("policies"):
                 policy_name_map = {p["name"]: p for p in policies["policies"]}
