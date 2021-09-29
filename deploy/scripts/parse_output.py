@@ -9,15 +9,19 @@ from pytablewriter import MarkdownTableWriter
 def make_comment(commit, resource_counts):
     tables = []
     for k, v in resource_counts.items():
+        if resource_counts[k]['delta'] > 0:
+            resource_counts[k]['delta'] = "+" + str(resource_counts[k]['delta'])
         tables.append(
             MarkdownTableWriter(
-                table_name=f"{k} resource count",
-                headers=['new', 'original', 'delta'],
+                table_name=f"Resource Counts",
+                headers=['policy', 'new', 'original', 'delta', 'delta percentage'],
                 value_matrix=[
                     [
+                        k,
                         resource_counts[k]['new'],
                         resource_counts[k]['original'],
-                        resource_counts[k]['delta']
+                        resource_counts[k]['delta'],
+                        str(resource_counts[k]['delta-percent'] * 100) + "%"
                     ]
                 ]
             ).dumps()
@@ -98,4 +102,4 @@ gh = Github(
 repo = gh.get_repo(full_name_or_id=os.environ["GITHUB_REPO"])
 commit = repo.get_commit(sha=os.environ["CODEBUILD_RESOLVED_SOURCE_VERSION"])
 make_comment(commit, resource_counts)
-make_status(resource_counts)
+make_status(commit, resource_counts)
