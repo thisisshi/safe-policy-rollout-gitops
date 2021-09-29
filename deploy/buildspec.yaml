@@ -19,5 +19,5 @@ phases:
       - custodian run /tmp/policystream-original.json/original -v --dryrun
   post_build:
     commands:
-      - python3 scripts/resolve_base.py
-      - python3 scripts/parse_output.py
+      - python3 /tmp/resolve_base.py
+      - python3 /tmp/parse_output.py
