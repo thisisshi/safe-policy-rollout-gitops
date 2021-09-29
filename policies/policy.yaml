@@ -1,0 +1,3 @@
+policies:
+  - name: all-s3
+    resource: aws.s3

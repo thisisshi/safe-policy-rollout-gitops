@@ -10,7 +10,7 @@ resource "aws_codebuild_project" "policy_ci" {
 
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "${aws_ecr_repository.policystream.repository_url}:latest"
+    image                       = "aws/codebuild/standard:5.0"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode             = true
@@ -21,19 +21,40 @@ resource "aws_codebuild_project" "policy_ci" {
     }
 
     environment_variable {
-      name  = "C7N_IMAGE_URL"
-      value = aws_ecr_repository.c7n.repository_url
-    }
-
-    environment_variable {
-      name  = "C7N_IMAGE_TAG"
-      value = var.c7n_image_tag
+      name  = "C7N_VERSION"
+      value = var.c7n_version
     }
 
     environment_variable {
       name  = "POLICY_DIR"
       value = var.policy_dir
     }
+
+    environment_variable {
+      name  = "OUTPUT_DIR"
+      value = var.output_dir
+    }
+
+    environment_variable {
+      name = "GITHUB_API_URL"
+      value = var.github_api_url
+    }
+
+    environment_variable {
+      name  = "GITHUB_REPO"
+      value = var.github_repo
+    }
+
+    environment_variable {
+      name = "RESOURCE_THRESHOLD"
+      value = var.resource_threshold
+    }
+
+    environment_variable {
+      name = "RESOURCE_THRESHOLD_PERCENT"
+      value = var.resource_threshold_percent
+    }
+
   }
 
   logs_config {
@@ -45,7 +66,7 @@ resource "aws_codebuild_project" "policy_ci" {
   source {
     type            = "GITHUB"
     location        = var.repository_url
-    git_clone_depth = 2
+    git_clone_depth = 0
     buildspec       = "deploy/buildspec.yaml"
   }
 }

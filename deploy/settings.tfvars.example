@@ -1,2 +1,3 @@
 repository_url = "https://github.com/thisisshi/gitops-policy-rollout.git"
 base_branch = "main"
+github_repo = "thisisshi/gitops-policy-rollout"
