@@ -5,7 +5,7 @@ phases:
     commands:
       # pull policystream image
       - pwd
-      - ls
+      - ls -ltra
       - export CUR_DIR=$(pwd)
       - aws ecr get-login-password | docker login --username AWS --password-stdin $POLICYSTREAM_IMAGE_URL
       - docker pull $POLICYSTREAM_IMAGE_URL
