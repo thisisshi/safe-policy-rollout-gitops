@@ -16,7 +16,7 @@ phases:
       - git checkout $POLICYSTREAM_BASE
       - python3 /tmp/resolve_base.py
       - cat /tmp/policystream-original.json
-      - custodian run /tmp/policystream-original.json -s $OUTPUT_DIR/original -v --dryrun
+      - custodian run /tmp/policystream-original.yaml -s $OUTPUT_DIR/original -v --dryrun
   post_build:
     commands:
       # Now parse the outputs

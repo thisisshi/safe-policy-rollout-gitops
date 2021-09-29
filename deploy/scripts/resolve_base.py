@@ -53,5 +53,5 @@ log.info(f"Original Policies: {json.dumps(original_policies, indent=2)}")
 new_policies = list(set(changed_policy_names).difference(set(original_policy_names)))
 log.info(f"New Policies: {new_policies}")
 
-with open("/tmp/policystream-original.json", "w+") as f:
+with open("/tmp/policystream-original.yaml", "w+") as f:
     yaml.dump(original_policies, f)
