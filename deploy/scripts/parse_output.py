@@ -10,7 +10,9 @@ def make_comment(commit, resource_counts):
     tables = []
     for k, v in resource_counts.items():
         if resource_counts[k]['delta'] > 0:
-            resource_counts[k]['delta'] = "+" + str(resource_counts[k]['delta'])
+            resource_counts[k]['delta'] = f"+{resource_counts[k]['delta']}"
+        if not isinstance(resource_counts[k]['delta-percent'], str):
+            resource_counts[k]['delta-percent'] = f"{str(resource_counts[k]['delta-percent'] * 100)}%"
         tables.append(
             MarkdownTableWriter(
                 table_name=f"Resource Counts",
@@ -21,7 +23,7 @@ def make_comment(commit, resource_counts):
                         resource_counts[k]['new'],
                         resource_counts[k]['original'],
                         resource_counts[k]['delta'],
-                        str(resource_counts[k]['delta-percent'] * 100) + "%"
+                        resource_counts[k]['delta-percent'],
                     ]
                 ]
             ).dumps()
@@ -89,7 +91,7 @@ for k, v in resource_counts.items():
         resource_counts[k]["new"] = 0
     resource_counts[k]["delta"] = v["new"] - v["original"]
     if resource_counts[k]['original'] == 0:
-        resource_counts[k]['delta-percent'] = 1
+        resource_counts[k]['delta-percent'] = "infinity"
     else:
         resource_counts[k]['delta'] = v['new']/v['original']
 
