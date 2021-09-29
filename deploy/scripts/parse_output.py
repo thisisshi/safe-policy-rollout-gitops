@@ -20,7 +20,7 @@ def make_comment(resource_counts):
                         resource_counts[k]['delta']
                     ]
                 ]
-            )
+            ).write_table()
         )
 
     report = "\n".join(tables)
