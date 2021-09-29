@@ -29,6 +29,11 @@ resource "aws_codebuild_project" "policy_ci" {
       name  = "POLICY_DIR"
       value = var.policy_dir
     }
+
+    environment_variable {
+      name  = "OUTPUT_DIR"
+      value = var.output_dir
+    }
   }
 
   logs_config {

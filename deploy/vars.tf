@@ -37,3 +37,9 @@ variable "config" {
   description = "Config for policies"
   default = {}
 }
+
+variable "output_dir" {
+  type = string
+  description = "Cloud Custodian Output directory"
+  default = "output"
+}

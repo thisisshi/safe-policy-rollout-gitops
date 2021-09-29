@@ -3,14 +3,19 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      # pull policystream image
-      - pip install c7n-policystream
-      - c7n-policystream diff -r $POLICY_DIR --target $CODEBUILD_RESOLVED_SOURCE_VERSION --source $POLICYSTREAM_BASE -o policystream.yaml
-      - cat policystream.yaml
-      # pull the c7n image and run it
-      - pip install c7n==$C7N_VERSION
-      - custodian run policystream.yaml -s output -v --dryrun
+      - pip install c7n-policystream c7n==$C7N_VERSION
   build:
-    commands: []
+    commands:
+      # run against changed policies
+      - c7n-policystream diff -r $POLICY_DIR --target $CODEBUILD_RESOLVED_SOURCE_VERSION --source $POLICYSTREAM_BASE -o /tmp/policystream.yaml
+      - cat policystream.yaml
+      - custodian run /tmp/policystream.yaml -s $OUTPUT_DIR/new -v --dryrun
+      # now run against the original policies
+      - git checkout $POLICYSTREAM_BASE
+      - python3 scripts/resolve_base.py
+      - cat /tmp/policystream-original.json
+      - custodian run /tmp/policystream-original.json/original -v --dryrun
   post_build:
-    commands: []
+    commands:
+      - python3 scripts/resolve_base.py
+      - python3 scripts/parse_output.py
