@@ -56,5 +56,5 @@ log.info(f"New Policies: {new_policies}")
 with open("/tmp/policystream-original.yaml", "w+") as f:
     yaml.dump(original_policies, f)
 
-with open('/tmp/new_policies.json') as f:
+with open('/tmp/new_policies.json', 'w+') as f:
     json.dump({"new": new_policies}, f)
