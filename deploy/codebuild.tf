@@ -10,10 +10,15 @@ resource "aws_codebuild_project" "policy_ci" {
 
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "${aws_ecr_repository.policystream.repository_url}:latest"
+    image                       = "aws/codebuild/standard:5.0"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode             = true
+
+    environment_variable {
+      name  = "POLICYSTREAM_IMAGE_URL"
+      value = "${aws_ecr_repository.policystream.repository_url}:latest"
+    }
 
     environment_variable {
       name  = "POLICYSTREAM_BASE"
