@@ -8,7 +8,7 @@ phases:
   pre_build:
     commands:
       - pip install c7n-policystream c7n==$C7N_VERSION
-      - pip install -r scripts/requirements.txt
+      - pip install -r deploy/scripts/requirements.txt
   build:
     commands:
       # run against changed policies
