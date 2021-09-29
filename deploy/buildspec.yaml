@@ -15,7 +15,7 @@ phases:
       # now run against the original policies
       - git checkout $POLICYSTREAM_BASE
       - python3 /tmp/resolve_base.py
-      - cat /tmp/policystream-original.json
+      - cat /tmp/policystream-original.yaml
       - custodian run /tmp/policystream-original.yaml -s $OUTPUT_DIR/original -v --dryrun
   post_build:
     commands:
