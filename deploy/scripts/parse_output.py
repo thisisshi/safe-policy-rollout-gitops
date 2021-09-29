@@ -98,7 +98,7 @@ for k, v in resource_counts.items():
     if resource_counts[k]["original"] == 0:
         resource_counts[k]["delta-percent"] = "infinity"
     else:
-        resource_counts[k]["delta"] = v["new"] / v["original"]
+        resource_counts[k]["delta-percent"] = v["new"] / v["original"]
 
 log.info(json.dumps(resource_counts, indent=2))
 
