@@ -4,6 +4,8 @@ phases:
   pre_build:
     commands:
       # pull policystream image
+      - pwd
+      - ls
       - export CUR_DIR=$(pwd)
       - aws ecr get-login-password | docker login --username AWS --password-stdin $POLICYSTREAM_IMAGE_URL
       - docker pull $POLICYSTREAM_IMAGE_URL
