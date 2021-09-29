@@ -56,6 +56,13 @@ data "aws_iam_policy_document" "codebuild_access" {
     ]
     resources = ["*"]
   }
+
+  statement {
+    effect = "Allow"
+    sid = "secretsmanagerAccess"
+    actions = ["secretsmanager:GetSecretValue"]
+    resources = [aws_secretsmanager_secret.github_token.arn]
+  }
 }
 
 resource "aws_iam_policy" "codebuild_access" {
