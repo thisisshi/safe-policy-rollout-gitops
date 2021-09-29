@@ -3,6 +3,29 @@ import logging
 import os
 
 from github import Github
+from pytablewriter import MarkdownTableWriter
+
+
+def make_comment(resource_counts):
+    tables = []
+    for k, v in resource_counts.items():
+        tables.append(
+            MarkdownTableWriter(
+                table_name=f"{k} resource count",
+                headers=['new', 'original', 'delta'],
+                value_matrix=[
+                    [
+                        resource_counts[k]['new'],
+                        resource_counts[k]['original'],
+                        resource_counts[k]['delta']
+                    ]
+                ]
+            )
+        )
+
+    report = "\n".join(tables)
+    return report
+
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("policystream:ParseOutput")
@@ -41,10 +64,5 @@ gh = Github(
 repo = gh.get_repo(full_name_or_id=os.environ["GITHUB_REPO"])
 commit = repo.get_commit(sha=os.environ["CODEBUILD_RESOLVED_SOURCE_VERSION"])
 commit.create_comment(
-    body="hello world"
-)
-commit.create_status(
-    context="c7n/ci",
-    state="success",
-    description="C7N CI Completed"
+    body=make_comment(resource_counts)
 )
