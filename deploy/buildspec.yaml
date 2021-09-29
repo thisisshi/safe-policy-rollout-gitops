@@ -7,7 +7,7 @@ phases:
       - export CUR_DIR=$(pd)
       - aws ecr get-login-password | docker login --username AWS --password-stdin $POLICYSTREAM_IMAGE_URL
       - docker pull $POLICYSTREAM_IMAGE_URL
-      - docker run -v $pwd:/home/custodian $POLICYSTREAM_IMAGE_URL diff -r /home/custodian/$POLICY_DIR --target $CODEBUILD_RESOLVED_SOURCE_VERSION --source $POLICYSTREAM_BASE -o /home/custodian/policy.yaml
+      - docker run -v $CUR_DIR:/home/custodian $POLICYSTREAM_IMAGE_URL diff -r /home/custodian/$POLICY_DIR --target $CODEBUILD_RESOLVED_SOURCE_VERSION --source $POLICYSTREAM_BASE -o /home/custodian/policy.yaml
       - cat /ci/output/policy.yaml
       # pull the c7n image and run it
       - export C7N_IMAGE="$C7N_IMAGE_URL:$C7N_IMAGE_TAG"
