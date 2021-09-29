@@ -43,3 +43,15 @@ variable "output_dir" {
   description = "Cloud Custodian Output directory"
   default = "output"
 }
+
+variable github_api_url {
+  type = string
+  description = "Github API Url"
+  default = "https://github.com/api/v3"
+}
+
+variable github_token {
+  type = string
+  sensitive = true
+  description = "Github Token to Create Status Checks"
+}

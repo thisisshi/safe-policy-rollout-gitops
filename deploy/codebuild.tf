@@ -34,6 +34,11 @@ resource "aws_codebuild_project" "policy_ci" {
       name  = "OUTPUT_DIR"
       value = var.output_dir
     }
+
+    environment_variable {
+      name = "GITHUB_API_URL"
+      value = var.github_api_url
+    }
   }
 
   logs_config {
