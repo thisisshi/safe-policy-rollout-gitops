@@ -31,3 +31,9 @@ variable "policy_dir" {
   description = "Policies Directory (relative path from repo root)"
   default     = "policies"
 }
+
+variable "config" {
+  type = map(string)
+  description = "Config for policies"
+  default = {}
+}
