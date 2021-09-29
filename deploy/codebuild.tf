@@ -42,7 +42,7 @@ resource "aws_codebuild_project" "policy_ci" {
 
     environment_variable {
       name  = "GITHUB_REPO"
-      value = var.repository_url
+      value = var.github_repo
     }
 
   }

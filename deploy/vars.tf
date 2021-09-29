@@ -55,3 +55,8 @@ variable github_token {
   sensitive = true
   description = "Github Token to Create Status Checks"
 }
+
+variable github_repo {
+  type = string
+  description = "Github Repo Name"
+}
