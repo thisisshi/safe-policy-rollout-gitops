@@ -4,11 +4,11 @@ phases:
   pre_build:
     commands:
       # pull policystream image
-      - pip install c7n-policystream
+      - pip install c7n-policystream==$C7N_VERSION
       - c7n-policystream diff -r $POLICY_DIR --target $CODEBUILD_RESOLVED_SOURCE_VERSION --source $POLICYSTREAM_BASE -o policystream.yaml
       - cat policystream.yaml
       # pull the c7n image and run it
-      - pip install c7n@$C7N_IMAGE_TAG
+      - pip install c7n==$C7N_VERSION
       - custodian run policystream.yaml -s output -v --dryrun
   build:
     commands: []

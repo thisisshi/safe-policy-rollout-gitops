@@ -16,23 +16,13 @@ resource "aws_codebuild_project" "policy_ci" {
     privileged_mode             = true
 
     environment_variable {
-      name  = "POLICYSTREAM_IMAGE_URL"
-      value = "${aws_ecr_repository.policystream.repository_url}:latest"
-    }
-
-    environment_variable {
       name  = "POLICYSTREAM_BASE"
       value = var.base_branch
     }
 
     environment_variable {
-      name  = "C7N_IMAGE_URL"
-      value = aws_ecr_repository.c7n.repository_url
-    }
-
-    environment_variable {
-      name  = "C7N_IMAGE_TAG"
-      value = var.c7n_image_tag
+      name  = "C7N_VERSION"
+      value = var.c7n_version
     }
 
     environment_variable {

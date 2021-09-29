@@ -14,10 +14,10 @@ variable "base_branch" {
   description = "Base Branch"
 }
 
-variable "c7n_image_tag" {
+variable "c7n_version" {
   type        = string
-  description = "C7N Image Tag"
-  default     = "latest"
+  description = "C7N Version"
+  default     = "0.9.13"
 }
 
 variable "tags" {
