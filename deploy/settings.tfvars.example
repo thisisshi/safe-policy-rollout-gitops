@@ -1,3 +1,0 @@
-repository_url = "https://github.com/thisisshi/safe-policy-rollout-gitops.git"
-base_branch = "main"
-github_repo = "thisisshi/safe-policy-rollout-gitops"
