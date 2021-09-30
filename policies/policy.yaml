@@ -7,5 +7,5 @@ policies:
     resource: aws.s3
     filters:
       - type: value
-        key: BucketName
+        key: Name
         value: 532725030595-us-east-1-sambox-sceptre-artifacts
