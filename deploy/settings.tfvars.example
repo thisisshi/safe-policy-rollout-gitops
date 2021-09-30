@@ -8,6 +8,8 @@ github_token = ""
 
 github_repo = ""
 
+accounts_yaml = ""
+
 # OPTIONAL
 
 # ci_policy_arn = "arn:aws:Iam:aws:policy/ReadOnlyAccess"
