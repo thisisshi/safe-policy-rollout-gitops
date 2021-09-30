@@ -42,16 +42,16 @@ def make_comment(commit, resource_counts):
             resource_counts[k]["delta-percent"],
         ])
 
-        for account in resource_counts[k]['accounts'].keys():
-            for region in resource_counts[k]['accounts'].keys():
-                new = resource_counts[k]['accounts'][account][region]['new']
-                original = resource_counts[k]['accounts'][account][region]['original']
+        for account in v['accounts'].keys():
+            for region in v['accounts'].keys():
+                new = v['accounts'][account][region]['new']
+                original = v['accounts'][account][region]['original']
                 delta = get_delta_string(
-                    resource_counts[k]['accounts'][account][region]['delta']
+                    v['accounts'][account][region]['delta']
                 )
                 delta_percent = get_delta_percent_string(
-                    resource_counts[k]['accounts'][account][region]['delta'],
-                    resource_counts[k]['accounts'][account][region]['delta_percent']
+                    v['accounts'][account][region]['delta'],
+                    v['accounts'][account][region]['delta_percent']
                 )
                 account_value_matrix.append(
                     [
@@ -103,7 +103,7 @@ def make_status(commit, resource_counts):
             failed += 1
 
     if failed > 0:
-        description = "Found {failed} policies over resource threshold limits"
+        description = f"Found {failed} policies over resource threshold limits"
 
     commit.create_status(
         state=status,
