@@ -13,9 +13,9 @@ def make_comment(commit, resource_counts):
             resource_counts[k]["delta"] = f"+{resource_counts[k]['delta']}"
         if not isinstance(resource_counts[k]["delta-percent"], str):
             percent_str = f"{str(resource_counts[k]['delta-percent'] * 100)}%"
-            if resource_counts[k]['new'] > resource_counts[k]['old']:
+            if resource_counts[k]['new'] > resource_counts[k]['original']:
                 resource_counts[k]['delta-percent'] = "+" + percent_str
-            if resource_counts[k]['new'] < resource_counts[k]['old']:
+            if resource_counts[k]['new'] < resource_counts[k]['original']:
                 resource_counts[k]['delta-percent'] = "-" + percent_str
         value_matrix.append([
             k,
