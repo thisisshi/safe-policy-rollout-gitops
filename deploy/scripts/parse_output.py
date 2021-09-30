@@ -148,9 +148,9 @@ for subdir in ["new", "original"]:
 
             resource_counts.setdefault(policy_name, {})
             resource_counts[policy_name].setdefault(subdir, 0)
-            resource_counts[policy_name].setdefault('accounts')
-            resource_counts[policy_name]['accounts'].setdefault(account)
-            resource_counts[policy_name]['accounts'][account].setdefault(region)
+            resource_counts[policy_name].setdefault('accounts', {})
+            resource_counts[policy_name]['accounts'].setdefault(account, {})
+            resource_counts[policy_name]['accounts'][account].setdefault(region, {})
             resource_counts[policy_name]['accounts'][account][region].setdefault(subdir, 0)
 
             resource_counts[policy_name][subdir] += len(resources)
