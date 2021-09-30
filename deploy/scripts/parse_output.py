@@ -12,9 +12,11 @@ def make_comment(commit, resource_counts):
         if resource_counts[k]["delta"] > 0:
             resource_counts[k]["delta"] = f"+{resource_counts[k]['delta']}"
         if not isinstance(resource_counts[k]["delta-percent"], str):
-            resource_counts[k][
-                "delta-percent"
-            ] = f"{str(resource_counts[k]['delta-percent'] * 100)}%"
+            percent_str = f"{str(resource_counts[k]['delta-percent'] * 100)}%"
+            if resource_counts[k]['new'] > resource_counts[k]['old']:
+                resource_counts[k]['delta-percent'] = "+" + percent_str
+            if resource_counts[k]['new'] < resource_counts[k]['old']:
+                resource_counts[k]['delta-percent'] = "-" + percent_str
         value_matrix.append([
             k,
             resource_counts[k]["new"],
@@ -94,7 +96,8 @@ for k, v in resource_counts.items():
     if resource_counts[k]["original"] == 0:
         resource_counts[k]["delta-percent"] = "infinity"
     else:
-        resource_counts[k]["delta-percent"] = v["new"] / v["original"]
+        percentage = abs(v['original'] - v['new'])/v['original']
+        resource_counts[k]["delta-percent"] = percentage
 
 log.info(json.dumps(resource_counts, indent=2))
 
