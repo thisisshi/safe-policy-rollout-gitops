@@ -46,7 +46,7 @@ resource "aws_codebuild_project" "policy_ci" {
     }
 
     environment_variable {
-      name = "GITHUB_API_URL"
+      name  = "GITHUB_API_URL"
       value = var.github_api_url
     }
 
@@ -56,12 +56,12 @@ resource "aws_codebuild_project" "policy_ci" {
     }
 
     environment_variable {
-      name = "RESOURCE_THRESHOLD"
+      name  = "RESOURCE_THRESHOLD"
       value = var.resource_threshold
     }
 
     environment_variable {
-      name = "RESOURCE_THRESHOLD_PERCENT"
+      name  = "RESOURCE_THRESHOLD_PERCENT"
       value = var.resource_threshold_percent
     }
 

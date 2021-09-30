@@ -45,42 +45,42 @@ variable "policy_dir" {
 }
 
 variable "config" {
-  type = map(string)
+  type        = map(string)
   description = "Config for policies"
-  default = {}
+  default     = {}
 }
 
 variable "output_dir" {
-  type = string
+  type        = string
   description = "Cloud Custodian Output directory"
-  default = "output"
+  default     = "output"
 }
 
-variable github_api_url {
-  type = string
+variable "github_api_url" {
+  type        = string
   description = "Github API Url"
-  default = "https://api.github.com"
+  default     = "https://api.github.com"
 }
 
-variable github_token {
-  type = string
-  sensitive = true
+variable "github_token" {
+  type        = string
+  sensitive   = true
   description = "Github Token to Create Status Checks"
 }
 
-variable github_repo {
-  type = string
+variable "github_repo" {
+  type        = string
   description = "Github Repo Name"
 }
 
-variable resource_threshold {
-  type = number
+variable "resource_threshold" {
+  type        = number
   description = "Policy resource delta threshold"
-  default = 10
+  default     = 10
 }
 
-variable resource_threshold_percent {
-  type = number
+variable "resource_threshold_percent" {
+  type        = number
   description = "Policy resource delta threshold percent Valid Values between 0-1"
-  default = 1
+  default     = 1
 }
