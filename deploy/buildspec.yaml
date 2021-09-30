@@ -8,9 +8,9 @@ phases:
   pre_build:
     commands:
       # copy over the files to /tmp as we will be doing a checkout to a different branch
-      - aws s3 cp $SCRIPT_BUCKET/scripts/resolve_base.py /tmp/resolve_base.py
-      - aws s3 cp $SCRIPT_BUCKET/scripts/parse_output.py /tmp/parse_output.py
-      - aws s3 cp $SCRIPT_BUCKET/scripts/requirements.txt /tmp/requirements.txt
+      - aws s3 cp s3://$SCRIPT_BUCKET/scripts/resolve_base.py /tmp/resolve_base.py
+      - aws s3 cp s3://$SCRIPT_BUCKET/scripts/parse_output.py /tmp/parse_output.py
+      - aws s3 cp s3://$SCRIPT_BUCKET/scripts/requirements.txt /tmp/requirements.txt
       # install requirements
       - pip install c7n-policystream==$POLICYSTREAM_VERSION c7n-org==$C7N_ORG_VERSION c7n==$C7N_VERSION
       - pip install -r tmp/requirements.txt
