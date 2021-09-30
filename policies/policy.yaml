@@ -1,3 +1,11 @@
 policies:
+  - name: all-iam-role
+    resource: aws.iam-role
+  - name: all-lambda
+    resource: aws.lambda
   - name: all-s3
     resource: aws.s3
+    filters:
+      - type: value
+        key: Name
+        value: 532725030595-us-east-1-sambox-sceptre-artifacts

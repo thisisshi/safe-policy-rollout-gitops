@@ -7,32 +7,30 @@ from pytablewriter import MarkdownTableWriter
 
 
 def make_comment(commit, resource_counts):
-    tables = []
+    value_matrix = []
     for k, v in resource_counts.items():
         if resource_counts[k]["delta"] > 0:
             resource_counts[k]["delta"] = f"+{resource_counts[k]['delta']}"
         if not isinstance(resource_counts[k]["delta-percent"], str):
-            resource_counts[k][
-                "delta-percent"
-            ] = f"{str(resource_counts[k]['delta-percent'] * 100)}%"
-        tables.append(
-            MarkdownTableWriter(
-                table_name="Resource Counts",
-                headers=["policy", "new", "original", "delta", "delta percentage"],
-                value_matrix=[
-                    [
-                        k,
-                        resource_counts[k]["new"],
-                        resource_counts[k]["original"],
-                        resource_counts[k]["delta"],
-                        resource_counts[k]["delta-percent"],
-                    ]
-                ],
-            ).dumps()
-        )
+            percent_str = f"{str(resource_counts[k]['delta-percent'] * 100)}%"
+            if resource_counts[k]['new'] > resource_counts[k]['original']:
+                resource_counts[k]['delta-percent'] = "+" + percent_str
+            if resource_counts[k]['new'] < resource_counts[k]['original']:
+                resource_counts[k]['delta-percent'] = "-" + percent_str
+        value_matrix.append([
+            k,
+            resource_counts[k]["new"],
+            resource_counts[k]["original"],
+            resource_counts[k]["delta"],
+            resource_counts[k]["delta-percent"],
+        ])
 
-    report = "\n".join(tables)
-    commit.create_comment(body=report)
+    table = MarkdownTableWriter(
+        table_name="Resource Counts",
+        headers=["policy", "new", "original", "delta", "delta percentage"],
+        value_matrix=value_matrix
+    ).dumps()
+    commit.create_comment(body=table)
     return
 
 
@@ -51,8 +49,8 @@ def make_status(commit, resource_counts):
         if k in new_policies["new"]:
             continue
         if (
-            v["delta"] >= os.environ["RESOURCE_THRESHOLD"]
-            or v["delta-percent"] > os.environ["RESOURCE_THRESHOLD_PERCENT"]
+            v["delta"] >= int(os.environ["RESOURCE_THRESHOLD"])
+            or v["delta-percent"] > int(os.environ["RESOURCE_THRESHOLD_PERCENT"])
         ):
             status = "failure"
             failed += 1
@@ -98,7 +96,8 @@ for k, v in resource_counts.items():
     if resource_counts[k]["original"] == 0:
         resource_counts[k]["delta-percent"] = "infinity"
     else:
-        resource_counts[k]["delta"] = v["new"] / v["original"]
+        percentage = abs(v['original'] - v['new'])/v['original']
+        resource_counts[k]["delta-percent"] = percentage
 
 log.info(json.dumps(resource_counts, indent=2))
 
@@ -107,5 +106,5 @@ gh = Github(
 )
 repo = gh.get_repo(full_name_or_id=os.environ["GITHUB_REPO"])
 commit = repo.get_commit(sha=os.environ["CODEBUILD_RESOLVED_SOURCE_VERSION"])
-make_comment(commit, resource_counts)
 make_status(commit, resource_counts)
+make_comment(commit, resource_counts)
