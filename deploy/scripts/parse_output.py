@@ -77,7 +77,7 @@ def make_comment(commit, resource_counts):
         value_matrix=account_value_matrix
     ).dumps()
     table_body = "<details>\n\n" + all_table + "\n\n" + account_table + "\n</details>"
-    commit.create_comment(body=":tada:Your Policy Execution results:\n" + table_body)
+    commit.create_comment(body=":tada: Your Policy Execution results:\n" + table_body)
     return
 
 
