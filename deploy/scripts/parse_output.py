@@ -6,17 +6,34 @@ from github import Github
 from pytablewriter import MarkdownTableWriter
 
 
+def get_delta_percent_string(delta, delta_percent):
+    if isinstance(delta_percent, str):
+        return delta_percent
+    percent_str = f"{delta_percent * 100}%"
+    if delta > 0:
+        return f"+{percent_str}"
+    if delta < 0:
+        return f"-{percent_str}"
+    return percent_str
+
+
+def get_delta_string(delta):
+    if delta > 0:
+        return f"\\+{delta}"
+    return str(delta)
+
+
 def make_comment(commit, resource_counts):
     value_matrix = []
+    account_value_matrix = []
     for k, v in resource_counts.items():
-        if resource_counts[k]["delta"] > 0:
-            resource_counts[k]["delta"] = f"+{resource_counts[k]['delta']}"
-        if not isinstance(resource_counts[k]["delta-percent"], str):
-            percent_str = f"{str(resource_counts[k]['delta-percent'] * 100)}%"
-            if resource_counts[k]['new'] > resource_counts[k]['original']:
-                resource_counts[k]['delta-percent'] = "+" + percent_str
-            if resource_counts[k]['new'] < resource_counts[k]['original']:
-                resource_counts[k]['delta-percent'] = "-" + percent_str
+        resource_counts[k]['delta-percent'] = get_delta_percent_string(
+            resource_counts[k]['delta'],
+            resource_counts[k]['delta-percent']
+        )
+        resource_counts[k]['delta'] = get_delta_string(
+            resource_counts[k]['delta']
+        )
         value_matrix.append([
             k,
             resource_counts[k]["new"],
@@ -25,12 +42,41 @@ def make_comment(commit, resource_counts):
             resource_counts[k]["delta-percent"],
         ])
 
-    table = MarkdownTableWriter(
+        for account in v['accounts'].keys():
+            for region in v['accounts'][account].keys():
+                new = v['accounts'][account][region]['new']
+                original = v['accounts'][account][region]['original']
+                delta = get_delta_string(
+                    v['accounts'][account][region]['delta']
+                )
+                delta_percent = get_delta_percent_string(
+                    v['accounts'][account][region]['delta'],
+                    v['accounts'][account][region]['delta-percent']
+                )
+                account_value_matrix.append(
+                    [
+                        account,
+                        region,
+                        k,
+                        new,
+                        original,
+                        delta,
+                        delta_percent
+                    ]
+                )
+
+    all_table = MarkdownTableWriter(
         table_name="Resource Counts",
         headers=["policy", "new", "original", "delta", "delta percentage"],
         value_matrix=value_matrix
     ).dumps()
-    commit.create_comment(body=table)
+    account_table = MarkdownTableWriter(
+        table_name="Account/Region Resource Counts",
+        headers=["account", "region", "policy", "new", "original", "delta", "delta percentage"],
+        value_matrix=account_value_matrix
+    ).dumps()
+    collapsed_account_table = "<details>\n\n" + account_table + "\n</details>"
+    commit.create_comment(body="\n".join([all_table, collapsed_account_table]))
     return
 
 
@@ -56,7 +102,7 @@ def make_status(commit, resource_counts):
             failed += 1
 
     if failed > 0:
-        description = "Found {failed} policies over resource threshold limits"
+        description = f"Found {failed} policies over resource threshold limits"
 
     commit.create_status(
         state=status,
@@ -64,6 +110,21 @@ def make_status(commit, resource_counts):
         context="cloud-custodian/resource-threshold",
     )
     pass
+
+
+def get_delta(resource_counts):
+    for k, v in resource_counts.items():
+        if "original" not in v:
+            resource_counts[k]["original"] = 0
+        if "new" not in v:
+            resource_counts[k]["new"] = 0
+        resource_counts[k]["delta"] = v["new"] - v["original"]
+        if resource_counts[k]["original"] == 0:
+            resource_counts[k]["delta-percent"] = "infinity"
+        else:
+            percentage = abs(v['original'] - v['new'])/v['original']
+            resource_counts[k]["delta-percent"] = percentage
+    return resource_counts
 
 
 logging.basicConfig(level=logging.INFO)
@@ -78,26 +139,27 @@ for subdir in ["new", "original"]:
         for name in files:
             if name != "resources.json":
                 continue
-            policy_name = root.rsplit("/", 1)[-1]
+            _, __, account, region, policy_name = root.split("/")
             with open(os.path.join(root, name)) as f:
                 resources = json.load(f)
             log.info(
-                f"found: {len(resources)} resources for policy:{policy_name} in run:{subdir}"
+                f"found: {len(resources)} resources for policy:{policy_name} in run:{subdir} in account:{account} region:{region}"  # noqa
             )
-            resource_counts.setdefault(policy_name, {})
-            resource_counts[policy_name][subdir] = len(resources)
 
+            resource_counts.setdefault(policy_name, {})
+            resource_counts[policy_name].setdefault(subdir, 0)
+            resource_counts[policy_name].setdefault('accounts', {})
+            resource_counts[policy_name]['accounts'].setdefault(account, {})
+            resource_counts[policy_name]['accounts'][account].setdefault(region, {})
+            resource_counts[policy_name]['accounts'][account][region].setdefault(subdir, 0)
+
+            resource_counts[policy_name][subdir] += len(resources)
+            resource_counts[policy_name]['accounts'][account][region][subdir] += len(resources)
+
+get_delta(resource_counts)
 for k, v in resource_counts.items():
-    if "original" not in v:
-        resource_counts[k]["original"] = 0
-    if "new" not in v:
-        resource_counts[k]["new"] = 0
-    resource_counts[k]["delta"] = v["new"] - v["original"]
-    if resource_counts[k]["original"] == 0:
-        resource_counts[k]["delta-percent"] = "infinity"
-    else:
-        percentage = abs(v['original'] - v['new'])/v['original']
-        resource_counts[k]["delta-percent"] = percentage
+    for account in v['accounts'].keys():
+        get_delta(v['accounts'][account])
 
 log.info(json.dumps(resource_counts, indent=2))
 

@@ -21,6 +21,16 @@ resource "aws_codebuild_project" "policy_ci" {
     }
 
     environment_variable {
+      name  = "POLICYSTREAM_VERSION"
+      value = var.policystream_version
+    }
+
+    environment_variable {
+      name  = "C7N_ORG_VERSION"
+      value = var.c7n_org_version
+    }
+
+    environment_variable {
       name  = "C7N_VERSION"
       value = var.c7n_version
     }
@@ -36,7 +46,7 @@ resource "aws_codebuild_project" "policy_ci" {
     }
 
     environment_variable {
-      name = "GITHUB_API_URL"
+      name  = "GITHUB_API_URL"
       value = var.github_api_url
     }
 
@@ -46,12 +56,12 @@ resource "aws_codebuild_project" "policy_ci" {
     }
 
     environment_variable {
-      name = "RESOURCE_THRESHOLD"
+      name  = "RESOURCE_THRESHOLD"
       value = var.resource_threshold
     }
 
     environment_variable {
-      name = "RESOURCE_THRESHOLD_PERCENT"
+      name  = "RESOURCE_THRESHOLD_PERCENT"
       value = var.resource_threshold_percent
     }
 
