@@ -7,7 +7,7 @@ from pytablewriter import MarkdownTableWriter
 
 
 def make_comment(commit, resource_counts):
-    tables = []
+    value_matrix = []
     for k, v in resource_counts.items():
         if resource_counts[k]["delta"] > 0:
             resource_counts[k]["delta"] = f"+{resource_counts[k]['delta']}"
@@ -15,24 +15,20 @@ def make_comment(commit, resource_counts):
             resource_counts[k][
                 "delta-percent"
             ] = f"{str(resource_counts[k]['delta-percent'] * 100)}%"
-        tables.append(
-            MarkdownTableWriter(
-                table_name="Resource Counts",
-                headers=["policy", "new", "original", "delta", "delta percentage"],
-                value_matrix=[
-                    [
-                        k,
-                        resource_counts[k]["new"],
-                        resource_counts[k]["original"],
-                        resource_counts[k]["delta"],
-                        resource_counts[k]["delta-percent"],
-                    ]
-                ],
-            ).dumps()
-        )
+        value_matrix.append([
+            k,
+            resource_counts[k]["new"],
+            resource_counts[k]["original"],
+            resource_counts[k]["delta"],
+            resource_counts[k]["delta-percent"],
+        ])
 
-    report = "\n".join(tables)
-    commit.create_comment(body=report)
+    table = MarkdownTableWriter(
+        table_name="Resource Counts",
+        headers=["policy", "new", "original", "delta", "delta percentage"],
+        value_matrix=[value_matrix]
+    ).dumps()
+    commit.create_comment(body=table)
     return
 
 
