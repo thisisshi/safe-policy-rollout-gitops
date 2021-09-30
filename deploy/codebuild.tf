@@ -16,6 +16,11 @@ resource "aws_codebuild_project" "policy_ci" {
     privileged_mode             = true
 
     environment_variable {
+      name  = "SCRIPT_BUCKET"
+      value = local.bucket_name
+    }
+
+    environment_variable {
       name  = "POLICYSTREAM_BASE"
       value = var.base_branch
     }

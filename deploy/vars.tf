@@ -44,12 +44,6 @@ variable "policy_dir" {
   default     = "policies"
 }
 
-variable "config" {
-  type        = map(string)
-  description = "Config for policies"
-  default     = {}
-}
-
 variable "output_dir" {
   type        = string
   description = "Cloud Custodian Output directory"
@@ -83,4 +77,10 @@ variable "resource_threshold_percent" {
   type        = number
   description = "Policy resource delta threshold percent Valid Values between 0-1"
   default     = 1
+}
+
+variable "bucket" {
+  type        = string
+  description = "Pass in a bucket to use the bucket for storing scripts, else one is created"
+  default     = ""
 }
