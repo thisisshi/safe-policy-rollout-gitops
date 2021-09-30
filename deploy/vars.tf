@@ -69,6 +69,6 @@ variable resource_threshold {
 
 variable resource_threshold_percent {
   type = number
-  description = "Policy resource delta threshold percent"
+  description = "Policy resource delta threshold percent Valid Values between 0-1"
   default = 1
 }
