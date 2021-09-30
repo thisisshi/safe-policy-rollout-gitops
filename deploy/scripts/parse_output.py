@@ -75,7 +75,8 @@ def make_comment(commit, resource_counts):
         headers=["account", "region", "policy", "new", "original", "delta", "delta percentage"],
         value_matrix=account_value_matrix
     ).dumps()
-    commit.create_comment(body="\n".join([all_table, account_table]))
+    collapsed_account_table = "<details\n" + account_table + "\n</details>"
+    commit.create_comment(body="\n".join([all_table, collapsed_account_table]))
     return
 
 
