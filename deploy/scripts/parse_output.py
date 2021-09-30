@@ -51,7 +51,7 @@ def make_comment(commit, resource_counts):
                 )
                 delta_percent = get_delta_percent_string(
                     v['accounts'][account][region]['delta'],
-                    v['accounts'][account][region]['delta_percent']
+                    v['accounts'][account][region]['delta-percent']
                 )
                 account_value_matrix.append(
                     [
