@@ -19,8 +19,8 @@ def get_delta_percent_string(delta, delta_percent):
 
 def get_delta_string(delta):
     if delta > 0:
-        return f"+{delta}"
-    return delta
+        return f"\\+{delta}"
+    return str(delta)
 
 
 def make_comment(commit, resource_counts):
