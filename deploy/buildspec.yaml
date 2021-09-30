@@ -13,7 +13,7 @@ phases:
       - aws s3 cp s3://$SCRIPT_BUCKET/scripts/requirements.txt /tmp/requirements.txt
       # install requirements
       - pip install c7n-policystream==$POLICYSTREAM_VERSION c7n-org==$C7N_ORG_VERSION c7n==$C7N_VERSION
-      - pip install -r tmp/requirements.txt
+      - pip install -r /tmp/requirements.txt
       - cp deploy/accounts.yaml /tmp/accounts.yaml
   build:
     commands:
