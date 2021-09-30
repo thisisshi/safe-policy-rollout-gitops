@@ -26,7 +26,7 @@ def make_comment(commit, resource_counts):
     table = MarkdownTableWriter(
         table_name="Resource Counts",
         headers=["policy", "new", "original", "delta", "delta percentage"],
-        value_matrix=[value_matrix]
+        value_matrix=value_matrix
     ).dumps()
     commit.create_comment(body=table)
     return
