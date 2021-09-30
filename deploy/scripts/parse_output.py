@@ -43,6 +43,7 @@ def make_comment(commit, resource_counts):
         ])
 
         for account in v['accounts'].keys():
+            log.info(v)
             for region in v['accounts'].keys():
                 new = v['accounts'][account][region]['new']
                 original = v['accounts'][account][region]['original']
