@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   secrets-manager:
-    GITHUB_TOKEN: C7NGithubToken
+    GITHUB_TOKEN: C7NCIGithubToken
 
 phases:
   pre_build:
