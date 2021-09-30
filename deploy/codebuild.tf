@@ -21,6 +21,16 @@ resource "aws_codebuild_project" "policy_ci" {
     }
 
     environment_variable {
+      name  = "POLICYSTREAM_VERSION"
+      value = var.policystream_version
+    }
+
+    environment_variable {
+      name  = "C7N_ORG_VERSION"
+      value = var.c7n_org_version
+    }
+
+    environment_variable {
       name  = "C7N_VERSION"
       value = var.c7n_version
     }

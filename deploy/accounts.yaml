@@ -1,0 +1,7 @@
+accounts:
+  - name: "Sandbox"
+    account_id: "532725030595"
+    role: "arn:aws:iam::532725030595:role/C7NPolicyCIRole"
+    regions:
+      - "us-east-1"
+      - "us-west-2"

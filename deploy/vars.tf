@@ -14,6 +14,18 @@ variable "base_branch" {
   description = "Base Branch"
 }
 
+variable "policystream_version" {
+  type        = string
+  description = "Policystream Version"
+  default     = "0.4.12"
+}
+
+variable "c7n_org_version" {
+  type        = string
+  description = "C7N Org Version"
+  default     = "0.6.12"
+}
+
 variable "c7n_version" {
   type        = string
   description = "C7N Version"
