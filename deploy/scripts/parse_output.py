@@ -139,7 +139,7 @@ for subdir in ["new", "original"]:
         for name in files:
             if name != "resources.json":
                 continue
-            account, region, policy_name = root.split("/")
+            _, __, account, region, policy_name = root.split("/")
             with open(os.path.join(root, name)) as f:
                 resources = json.load(f)
             log.info(
