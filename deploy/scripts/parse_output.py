@@ -9,7 +9,8 @@ from pytablewriter import MarkdownTableWriter
 def get_delta_percent_string(delta, delta_percent):
     if isinstance(delta_percent, str):
         return delta_percent
-    percent_str = f"{delta_percent * 100}%"
+    delta_percent = 100 * delta_percent
+    percent_str = "{:.2f}%".format(delta_percent)
     if delta > 0:
         return f"+{percent_str}"
     if delta < 0:
