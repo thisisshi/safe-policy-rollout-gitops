@@ -7,7 +7,7 @@ policies:
     resource: aws.s3
     filters:
       - type: value
-         key: Name
-         value: 532725030595-us-east-1-sambox-sceptre-artifacts
+        key: Name
+        value: 532725030595-us-east-1-sambox-sceptre-artifacts
   - name: all-iam-policy
     resource: aws.iam-policy
