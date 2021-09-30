@@ -42,27 +42,28 @@ def make_comment(commit, resource_counts):
             resource_counts[k]["delta-percent"],
         ])
 
-        for account, region in resource_counts[k]['accounts'].items():
-            new = resource_counts[k]['accounts'][account][region]['new']
-            original = resource_counts[k]['accounts'][account][region]['original']
-            delta = get_delta_string(
-                resource_counts[k]['accounts'][account][region]['delta']
-            )
-            delta_percent = get_delta_percent_string(
-                resource_counts[k]['accounts'][account][region]['delta'],
-                resource_counts[k]['accounts'][account][region]['delta_percent']
-            )
-            account_value_matrix.append(
-                [
-                    k,
-                    account,
-                    region,
-                    new,
-                    original,
-                    delta,
-                    delta_percent
-                ]
-            )
+        for account in resource_counts[k]['accounts'].keys():
+            for region in resource_counts[k]['accounts'].keys():
+                new = resource_counts[k]['accounts'][account][region]['new']
+                original = resource_counts[k]['accounts'][account][region]['original']
+                delta = get_delta_string(
+                    resource_counts[k]['accounts'][account][region]['delta']
+                )
+                delta_percent = get_delta_percent_string(
+                    resource_counts[k]['accounts'][account][region]['delta'],
+                    resource_counts[k]['accounts'][account][region]['delta_percent']
+                )
+                account_value_matrix.append(
+                    [
+                        k,
+                        account,
+                        region,
+                        new,
+                        original,
+                        delta,
+                        delta_percent
+                    ]
+                )
 
     table = MarkdownTableWriter(
         table_name="Resource Counts",
