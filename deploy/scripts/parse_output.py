@@ -159,8 +159,7 @@ for subdir in ["new", "original"]:
 get_delta(resource_counts)
 for k, v in resource_counts.items():
     for account in v['accounts'].keys():
-        for region in v['accounts'][account].keys():
-            get_delta(v['accounts'][account][region])
+        get_delta(v['accounts'][account])
 
 log.info(json.dumps(resource_counts, indent=2))
 
