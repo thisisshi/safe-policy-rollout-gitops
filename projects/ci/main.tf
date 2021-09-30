@@ -9,6 +9,7 @@ module "c7n_ci" {
 
   github_token   = var.github_token
   repository_url = "https://github.com/thisisshi/safe-policy-rollout-gitops.git"
+  buildspec      = "buildspec.yaml"
   base_branch    = "main"
   github_repo    = "thisisshi/safe-policy-rollout-gitops"
   accounts_yaml  = "/Users/sonny/dev/thisisshi/gitops-policy-rollout/accounts.yaml"
