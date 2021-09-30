@@ -84,3 +84,8 @@ variable "bucket" {
   description = "Pass in a bucket to use the bucket for storing scripts, else one is created"
   default     = ""
 }
+
+variable "accounts_yaml" {
+  type = string
+  description = "Absolute path to c7n-org accounts.yaml"
+}

@@ -39,6 +39,12 @@ resource "aws_s3_bucket_object" "buildspec" {
   source = "${path.module}/buildspec.yaml"
 }
 
+resource "aws_s3_bucket_object" "accounts_yaml" {
+  bucket = local.bucket_name
+  key = "accounts.yaml"
+  source = var.accounts_yaml
+}
+
 output "bucket" {
   value = local.bucket_name
 }
