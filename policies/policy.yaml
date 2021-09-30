@@ -5,3 +5,5 @@ policies:
     resource: aws.lambda
   - name: all-s3
     resource: aws.s3
+  - name: all-iam-policy
+    resource: aws.iam-policy
