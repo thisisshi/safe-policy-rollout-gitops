@@ -9,11 +9,9 @@ policies:
     resource: aws.s3
     conditions:
       - region: us-east-1
-    filters:
-      - type: value
-        key: Name
-        value: 532725030595-us-east-1-sambox-sceptre-artifacts
   - name: all-iam-policy
     resource: aws.iam-policy
     conditions:
       - region: us-east-1
+    filters:
+      - PolicyName: C7NCICodebuildAccess
