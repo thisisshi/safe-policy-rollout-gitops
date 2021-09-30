@@ -55,9 +55,9 @@ def make_comment(commit, resource_counts):
                 )
                 account_value_matrix.append(
                     [
-                        k,
                         account,
                         region,
+                        k,
                         new,
                         original,
                         delta,
@@ -75,7 +75,7 @@ def make_comment(commit, resource_counts):
     table = MarkdownTableWriter(
         table_name="Account/Region Resource Counts",
         headers=["account", "region", "policy", "new", "original", "delta", "delta percentage"],
-        value_matrix=value_matrix
+        value_matrix=account_value_matrix
     ).dumps()
     commit.create_comment(body=table)
     return
