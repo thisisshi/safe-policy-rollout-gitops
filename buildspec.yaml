@@ -1,0 +1,32 @@
+version: 0.2
+
+env:
+  secrets-manager:
+    GITHUB_TOKEN: C7NGithubToken
+
+phases:
+  pre_build:
+    commands:
+      # copy over the files to /tmp as we will be doing a checkout to a different branch
+      - aws s3 cp s3://$SCRIPT_BUCKET/scripts/resolve_base.py /tmp/resolve_base.py
+      - aws s3 cp s3://$SCRIPT_BUCKET/scripts/parse_output.py /tmp/parse_output.py
+      - aws s3 cp s3://$SCRIPT_BUCKET/scripts/requirements.txt /tmp/requirements.txt
+      - aws s3 cp s3://$SCRIPT_BUCKET/accounts.yaml /tmp/accounts.yaml
+      # install requirements
+      - pip install c7n-policystream==$POLICYSTREAM_VERSION c7n-org==$C7N_ORG_VERSION c7n==$C7N_VERSION
+      - pip install -r /tmp/requirements.txt
+  build:
+    commands:
+      # run against changed policies
+      - c7n-policystream diff -r $POLICY_DIR --target $CODEBUILD_RESOLVED_SOURCE_VERSION --source $POLICYSTREAM_BASE -o /tmp/policystream.yaml
+      - cat /tmp/policystream.yaml
+      - c7n-org run -u /tmp/policystream.yaml -c /tmp/accounts.yaml -s $OUTPUT_DIR/new -v --dryrun
+      # now run against the original policies
+      - git checkout $POLICYSTREAM_BASE
+      - python3 /tmp/resolve_base.py
+      - cat /tmp/policystream-original.yaml
+      - c7n-org run -u /tmp/policystream-original.yaml -c /tmp/accounts.yaml -s $OUTPUT_DIR/original -v --dryrun
+  post_build:
+    commands:
+      # Now parse the outputs
+      - python3 /tmp/parse_output.py
