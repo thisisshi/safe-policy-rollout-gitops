@@ -17,3 +17,5 @@ policies:
     resource: aws.iam-policy
     conditions:
       - region: us-east-1
+  - name: another-s3-example
+    resource: aws.s3
